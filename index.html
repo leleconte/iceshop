@@ -316,11 +316,54 @@
     .feature-card p { margin: 0; color: var(--muted); line-height: 1.72; font-size: .93rem; }
 
     .shop-shell {
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(145deg, rgba(10,28,48,.72), rgba(4,13,23,.72));
+      box-shadow: var(--shadow);
+    }
+    .shop-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+    .search-wrap { position: relative; flex: 1; max-width: 470px; }
+    .search-wrap svg { position: absolute; top: 50%; left: 17px; width: 18px; transform: translateY(-50%); opacity: .62; }
+    .search-wrap input {
+      width: 100%;
+      height: 52px;
+      padding: 0 18px 0 47px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      outline: none;
+      color: var(--text);
+      background: rgba(4,13,23,.8);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .search-wrap input:focus { border-color: var(--line-strong); box-shadow: 0 0 0 4px rgba(82,216,240,.07); }
+    .product-count { color: var(--muted); font-size: .86rem; font-weight: 700; }
+    .filters { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 24px; }
+    .filter-btn {
+      min-height: 38px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #a9c0ce;
+      background: rgba(255,255,255,.025);
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+    .filter-btn:hover,
+    .filter-btn.active { color: #041019; border-color: transparent; background: var(--ice); box-shadow: 0 10px 24px rgba(82,216,240,.16); }
+
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .product-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 23px;
+      background: linear-gradient(160deg, rgba(13,33,55,.96), rgba(5,15,27,.98));
+      box-shadow: 0 22px 58px rgba(0,0,0,.25);
+      transform-style: preserve-3d;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
     .product-card:hover { border-color: rgba(154,244,255,.36); box-shadow: 0 28px 76px rgba(0,0,0,.38), 0 0 42px rgba(82,216,240,.05); }
     .product-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #07111c; }
@@ -334,8 +377,10 @@
     .product-category::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 9px currentColor; }
     .product-card h3 { margin: 13px 0 10px; font-size: 1.18rem; }
     .product-card p { min-height: 73px; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.68; }
-    .product-actions { display: block; margin-top: 20px; }
-    .product-actions .btn { width: 100%; }
+    .product-actions { display: grid; grid-template-columns: 1fr 48px; gap: 10px; margin-top: 20px; }
+    .icon-btn { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.025); cursor: pointer; transition: .2s ease; }
+    .icon-btn:hover { color: var(--ice); border-color: var(--line-strong); transform: translateY(-2px); }
+    .icon-btn svg { width: 18px; }
 
     .skeleton { overflow: hidden; min-height: 430px; border: 1px solid var(--line); border-radius: 23px; background: rgba(9,23,39,.82); }
     .skeleton::after { content: ""; display: block; height: 100%; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.055), transparent); animation: shimmer 1.5s infinite; }
@@ -389,6 +434,44 @@
     .toast { position: fixed; left: 50%; bottom: 24px; z-index: 120; max-width: min(460px, calc(100% - 32px)); padding: 14px 17px; border: 1px solid var(--line); border-radius: 14px; color: #eaffff; background: rgba(8,23,39,.95); box-shadow: var(--shadow); transform: translate(-50%, 140%); opacity: 0; transition: .28s ease; }
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
 
+    .modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; background: rgba(0,5,10,.78); backdrop-filter: blur(14px); opacity: 0; visibility: hidden; transition: .25s ease; }
+    .modal.open { opacity: 1; visibility: visible; }
+    .modal-card { width: min(820px, 100%); max-height: min(760px, 92vh); overflow: auto; border: 1px solid var(--line-strong); border-radius: 26px; background: linear-gradient(160deg, #0c243d, #06111e); box-shadow: 0 35px 100px rgba(0,0,0,.6); transform: translateY(20px) scale(.98); transition: .25s ease; }
+    .modal.open .modal-card { transform: translateY(0) scale(1); }
+    .modal-media { position: relative; aspect-ratio: 16/8.5; overflow: hidden; }
+    .modal-media img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, #071522, transparent 60%); }
+    .modal-close { position: absolute; z-index: 2; top: 16px; right: 16px; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 13px; background: rgba(3,10,18,.72); cursor: pointer; font-size: 1.3rem; }
+    .modal-body { padding: 27px; }
+    .modal-body h3 { margin: 10px 0 12px; font-family: Orbitron, sans-serif; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    .modal-body p { margin: 0; color: var(--muted); line-height: 1.78; }
+    .modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 25px; }
+    .modal-price { color: var(--ice); font-family: Orbitron, sans-serif; font-size: 1.35rem; font-weight: 900; }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .75s ease, transform .75s cubic-bezier(.2,.75,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes auroraMove { to { transform: translate(10vw, 8vh) scale(1.13); } }
+    @keyframes loaderFloat { 50% { transform: translateY(-8px); } }
+    @keyframes loaderBar { from { transform: translateX(-120%); } to { transform: translateX(360%); } }
+    @keyframes statusPulse { 50% { opacity: .45; transform: scale(.8); } }
+    @keyframes coreGlow { 50% { transform: scale(1.08); opacity: .72; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spinReverse { to { transform: rotate(-360deg); } }
+    @keyframes heroFloat { 50% { transform: translateY(-14px) rotate(-1deg); } }
+    @keyframes cardFloat { 50% { transform: translateY(-9px); } }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+
+    @media (max-width: 1050px) {
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 24px; padding-top: 64px; }
+      .hero-description { margin-inline: auto; }
+      .hero-actions, .hero-trust { justify-content: center; }
+      .hero-visual { min-height: 500px; }
+      .features-grid, .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-step:nth-child(2)::after { display: none; }
+    }
 
     @media (max-width: 780px) {
       .nav-links {
@@ -436,10 +519,14 @@
       .floating-card strong { font-size: .72rem; }
       .features-grid, .product-grid, .process-grid { grid-template-columns: 1fr; }
       .process-step::after { display: none !important; }
-
+      .shop-shell { padding: 14px; border-radius: 24px; }
+      .shop-toolbar { align-items: stretch; flex-direction: column; }
+      .search-wrap { max-width: none; }
+      .product-count { padding-left: 3px; }
       .cta-card { padding: 28px; }
       .footer-row { align-items: flex-start; flex-direction: column; }
-
+      .modal-footer { align-items: stretch; flex-direction: column; }
+      .modal-footer .btn { width: 100%; }
       .cursor-glow { display: none; }
     }
 
@@ -569,6 +656,14 @@
         </div>
 
         <div class="shop-shell reveal">
+          <div class="shop-toolbar">
+            <label class="search-wrap" aria-label="Cerca prodotto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg>
+              <input id="searchInput" type="search" placeholder="Cerca uno script..." autocomplete="off">
+            </label>
+            <div class="product-count" id="productCount">Caricamento catalogo...</div>
+          </div>
+          <div class="filters" id="categoryFilters"></div>
           <div class="product-grid" id="productGrid">
             <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
           </div>
@@ -625,6 +720,12 @@
   <button class="back-top" id="backTop" aria-label="Torna in alto">↑</button>
   <div class="toast" id="toast"></div>
 
+  <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-media"><img id="modalImage" src="ICE.PNG" alt=""><button class="modal-close" id="modalClose" aria-label="Chiudi">×</button></div>
+      <div class="modal-body"><span class="product-category" id="modalCategory">FiveM Script</span><h3 id="modalTitle">Prodotto</h3><p id="modalDescription"></p><div class="modal-footer"><span class="modal-price" id="modalPrice"></span><a class="btn btn-primary" id="modalBuy" href="#" target="_blank" rel="noopener noreferrer">Acquista su Tebex</a></div></div>
+    </div>
+  </div>
 
   <script>
     const SHOP_CONFIG = {
@@ -636,8 +737,13 @@
     const $ = (selector, scope = document) => scope.querySelector(selector);
     const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
     const productGrid = $("#productGrid");
+    const productCount = $("#productCount");
+    const categoryFilters = $("#categoryFilters");
+    const searchInput = $("#searchInput");
+    const modal = $("#productModal");
     const toast = $("#toast");
     let allProducts = [];
+    let activeCategory = "Tutti";
 
     const escapeHtml = (value = "") => String(value)
       .replaceAll("&", "&amp;")
@@ -663,19 +769,37 @@
       return url && !url.includes("INSERISCI") && url !== "#";
     }
 
+    function renderFilters() {
+      const categories = ["Tutti", ...new Set(allProducts.map(p => p.category || "FiveM Script"))];
+      categoryFilters.innerHTML = categories.map(category => `<button class="filter-btn ${category === activeCategory ? "active" : ""}" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`).join("");
+      $$(".filter-btn", categoryFilters).forEach(button => button.addEventListener("click", () => {
+        activeCategory = button.dataset.category;
+        renderFilters();
+        renderProducts();
+      }));
+    }
+
+    function filteredProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      return allProducts.filter(product => {
+        const categoryMatch = activeCategory === "Tutti" || (product.category || "FiveM Script") === activeCategory;
+        const textMatch = [product.name, product.description, product.category, product.badge].some(value => String(value || "").toLowerCase().includes(query));
+        return categoryMatch && textMatch;
+      });
+    }
 
     function renderProducts() {
-      const products = allProducts;
+      const products = filteredProducts();
+      productCount.textContent = `${products.length} ${products.length === 1 ? "prodotto" : "prodotti"}`;
 
       if (!products.length) {
-        productGrid.innerHTML = `<div class="empty-state"><img src="ICE.PNG" alt="ICE SHOP"><h3>Nessun prodotto disponibile</h3><p>Il catalogo verrà aggiornato direttamente dal bot Discord.</p></div>`;
+        productGrid.innerHTML = `<div class="empty-state"><img src="ICE.PNG" alt="ICE SHOP"><h3>Nessun prodotto trovato</h3><p>Prova un'altra ricerca oppure attendi un nuovo aggiornamento del catalogo.</p></div>`;
         return;
       }
 
       productGrid.innerHTML = products.map((product, index) => {
         const tebexUrl = product.tebexUrl || SHOP_CONFIG.tebexStoreUrl;
         const configured = isConfiguredUrl(tebexUrl);
-
         return `<article class="product-card tilt" data-id="${escapeHtml(product.id || String(index))}">
           <div class="product-media">
             <img src="${escapeHtml(product.image || "ICE.PNG")}" alt="${escapeHtml(product.name || "Prodotto ICE SHOP")}" loading="lazy" onerror="this.src='ICE.PNG'">
@@ -688,14 +812,40 @@
             <p>${escapeHtml(product.description || "Script FiveM sviluppato da ICE SHOP.")}</p>
             <div class="product-actions">
               <a class="btn btn-primary" href="${configured ? escapeHtml(tebexUrl) : "#"}" target="${configured ? "_blank" : "_self"}" rel="noopener noreferrer" aria-disabled="${configured ? "false" : "true"}">${configured ? "Acquista su Tebex" : "Configura Tebex"}</a>
+              <button class="icon-btn details-btn" data-id="${escapeHtml(product.id || String(index))}" aria-label="Visualizza dettagli">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+              </button>
             </div>
           </div>
         </article>`;
       }).join("");
 
       bindTilt();
+      $$(".details-btn").forEach(button => button.addEventListener("click", () => openProductModal(button.dataset.id)));
     }
 
+    function openProductModal(id) {
+      const product = allProducts.find((item, index) => String(item.id || index) === String(id));
+      if (!product) return;
+      $("#modalImage").src = product.image || "ICE.PNG";
+      $("#modalImage").alt = product.name || "Prodotto ICE SHOP";
+      $("#modalCategory").textContent = product.category || "FiveM Script";
+      $("#modalTitle").textContent = product.name || "Script FiveM";
+      $("#modalDescription").textContent = product.description || "Script FiveM sviluppato da ICE SHOP.";
+      $("#modalPrice").textContent = formatPrice(product.price);
+      const url = product.tebexUrl || SHOP_CONFIG.tebexStoreUrl;
+      const buy = $("#modalBuy");
+      buy.href = isConfiguredUrl(url) ? url : "#";
+      buy.textContent = isConfiguredUrl(url) ? "Acquista su Tebex" : "Configura Tebex";
+      buy.setAttribute("aria-disabled", isConfiguredUrl(url) ? "false" : "true");
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeProductModal() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
 
     async function loadProducts() {
       try {
@@ -704,10 +854,12 @@
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         allProducts = Array.isArray(data) ? data : (Array.isArray(data.products) ? data.products : []);
+        renderFilters();
         renderProducts();
       } catch (error) {
         console.error(error);
         allProducts = [];
+        renderFilters();
         renderProducts();
         showToast("Impossibile caricare products.json. Controlla che il file sia nel repository.");
       }
@@ -800,6 +952,7 @@
 
     $$(".discord-link").forEach(link => link.href = SHOP_CONFIG.discordUrl);
     $("#year").textContent = new Date().getFullYear();
+    searchInput.addEventListener("input", renderProducts);
 
     $("#mobileToggle").addEventListener("click", () => {
       const button = $("#mobileToggle");
@@ -822,6 +975,9 @@
       answer.style.maxHeight = item.classList.contains("open") ? `${answer.scrollHeight}px` : "0px";
     }));
 
+    $("#modalClose").addEventListener("click", closeProductModal);
+    modal.addEventListener("click", event => { if (event.target === modal) closeProductModal(); });
+    addEventListener("keydown", event => { if (event.key === "Escape") closeProductModal(); });
 
     const backTop = $("#backTop");
     addEventListener("scroll", () => backTop.classList.toggle("show", scrollY > 600));
